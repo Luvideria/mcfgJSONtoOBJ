@@ -14,12 +14,13 @@ Uses [tripy](https://github.com/linuxlewis/tripy) for triangulation of meshes.
 ### The up axis is the z axis !
 
 Created OBJ file allows each object to be colored independantly
-an object is:
+
+An object is:
 - a road
 - a field
 - the earth
-- walls of buildings
-- roof of buildings
+- walls of a building
+- roof of a building
 
 More specifically, each of these will have its own object and material:
 

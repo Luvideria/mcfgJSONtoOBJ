@@ -38,7 +38,7 @@ prismstri, prismsn = getSurfaces(prisms, 0.1)
 
 
 file=open(fn+".obj", "w")
-file.write("use mtllib "+fn+".mtl\n")
+file.write("mtllib "+fn+".mtl\n")
 
 writeTriangleArray(earthtri, file)
 for road in roadtri:
