@@ -19,6 +19,7 @@ fn=sys.argv[2]
 file=open(loc, "r")
 data=json.loads(file.read())
 
+#citywalls...
 earth=data["features"][1]["coordinates"]
 roads=data["features"][2]["geometries"]
 buildings=data["features"][6]["coordinates"]
@@ -68,7 +69,7 @@ for p in prismsn:
     writeNormalArray(p, file)
 
 counter=1
-counter=writeObjects([earthtri], file, counter, "earth")
+counter=writeObjects([earthn], file, counter, "earth")
 counter=writeObjects(roadn, file, counter, "road")
 counter=writeObjects(fieldn, file, counter, "field")
 counter=writeObjects(roofn, file, counter, "roof")
@@ -78,7 +79,7 @@ writeObjects(prismsn, file, counter, "prisms")
 
 mtl=open(fn+".mtl", "w")
 
-writeMTL(earthn, mtl, "earth")
+writeMTL([earthn], mtl, "earth")
 writeMTL(roadn, mtl, "road")
 writeMTL(fieldn, mtl, "field")
 writeMTL(roofn, mtl, "roof")

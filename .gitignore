@@ -1,5 +1,7 @@
 
 *.obj
+*.mtl
+
 *.json
 _build
 .ipynb_checkpoints
