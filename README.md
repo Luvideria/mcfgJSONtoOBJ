@@ -6,6 +6,9 @@ Exemple file: Hiddenlight.json
 result in [meshlab](http://www.meshlab.net/):
 ![Hiddenlight](https://github.com/Luvideria/mcfgJSONtoOBJ/raw/master/Hiddenlight.JPG)
 
+In Blender:
+![Hiddenlight](https://github.com/Luvideria/mcfgJSONtoOBJ/raw/master/Hiddenlight_blender.JPG)
+
 ## usage :
 ```bash
 pip install tripy
