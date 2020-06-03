@@ -2,6 +2,10 @@
 ====================
 ## export JSON to OBJ with customizable materials
 
+Exemple file: Hiddenlight.json
+result in [meshlab](http://www.meshlab.net/):
+![Hiddenlight](./hiddenlight.jpg)
+
 ## usage :
 ```bash
 pip install tripy
