@@ -4,7 +4,7 @@
 
 Exemple file: Hiddenlight.json
 result in [meshlab](http://www.meshlab.net/):
-![Hiddenlight](./hiddenlight.jpg)
+![Hiddenlight](https://github.com/Luvideria/mcfgJSONtoOBJ/raw/master/Hiddenlight.JPG)
 
 ## usage :
 ```bash
