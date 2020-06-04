@@ -6,9 +6,10 @@ Exemple file: Hiddenlight.json
 
 result in [meshlab](http://www.meshlab.net/):
 ![Hiddenlight](https://github.com/Luvideria/mcfgJSONtoOBJ/raw/master/Hiddenlight.JPG)
+You can use meshlab to optimize the generated obj mesh (it is highly redundant) and regroup the materials to only keep those that are dissimilar (lose naming though)
 
 In Blender:
-![Hiddenlight](https://github.com/Luvideria/mcfgJSONtoOBJ/raw/master/Hiddenlight_blender.JPG)
+![Hiddenlight_blender](https://github.com/Luvideria/mcfgJSONtoOBJ/raw/master/Hiddenlight_blender.jpg)
 
 ## usage :
 ```bash
