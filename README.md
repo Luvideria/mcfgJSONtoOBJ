@@ -11,6 +11,8 @@ You can use meshlab to optimize the generated obj mesh (it is highly redundant) 
 In Blender:
 ![Hiddenlight_blender](https://github.com/Luvideria/mcfgJSONtoOBJ/raw/master/Hiddenlight_blender.jpg)
 
+With walls in custom made renderer:
+![Moonridge_lm](https://github.com/Luvideria/mcfgJSONtoOBJ/raw/master/moonridge.jpg)
 ## usage :
 ```bash
 pip install tripy
@@ -52,16 +54,16 @@ newmtl earth_0
 	 Ni 1.0
 ```
 
-As of today, the importer is not tested for city walls or river.
+As of today, the importer is not tested for river.
 
 To create your own color scheme, change the functions in myColors.py:
 
 ```python
 def getWallbColor():
 	'''
-	city walls color
+	building walls color
 	'''
-    i=4
+    i=1
     kd=[0.46,0.03,0.09]
     ks=[0.3,0.01,0.02]
     ka=[0.2,0.01,0.01]
@@ -73,3 +75,7 @@ def getWallbColor():
 You can even create your own colors, it does not need to be fixed, use `random.random()` to create a number between 0 and 1. Add `import random` at the top of the file though.
 
 Textures are not yet supported.
+
+============
+## Changelog:
+21-09-2020: bugfixes with road not ending at the right place, city walls implemented with improvements needed

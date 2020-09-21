@@ -86,12 +86,12 @@ def writeNormalArray(array, file):
         file.write(vertex(a, True))
         
 def vertex(v, n=False):
-    x, z, y=v
+    x, y, z=v
     s=""
     if(n):
         s="vn "
     else:
         s="v "
 
-    s+=str(x)+" "+str(y)+" "+str(z)+"\n"
+    s+=str(x)+" "+str(z)+" "+str(-y)+"\n"
     return s

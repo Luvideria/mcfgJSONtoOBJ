@@ -39,8 +39,8 @@ roadtri, roadn = getRoads(roads)
 fieldtri, fieldn = getFields(fields, 0.1)#at 0.1, it creates a flat surface, above, it creates a bloc similar to a building, but walls and roof are not separated
 rooftri, roofn = getSurfaces(buildings, 8)
 wallbtri, wallbn = getWallsBuildings(buildings, 8)
-citywalltri,citywalln=getCityWalls(wallsContour,10)
-citytowertri,citytowern=getCityWalls(towersContour,12)
+citywalltri,citywalln=getCityWalls(wallsContour,12)
+citytowertri,citytowern=getCityWalls(towersContour,18)
 squaretri, squaren = getSurfaces(square, 0.1)
 prismstri, prismsn = getSurfaces(prisms, 0.1)
 
