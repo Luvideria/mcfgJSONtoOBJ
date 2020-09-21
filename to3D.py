@@ -14,43 +14,49 @@ def normalFromSeg(p0, p1):
     dy=dy/norm
     return [-dy, dx]
 
-def getRoads(roads, width=-1):
+def contourFromLine(line,width=5):
+    hw=width/2
+    lower=list()
+    higher=list()
+    
+    n=normalFromSeg(line[0], line[1])
+    for i in range(len(line)):
+        xi,yi=line[i]
+        
+        lower.append( [xi-n[0]*hw, yi-n[1]*hw] )
+        higher.append( [xi+n[0]*hw, yi+n[1]*hw] )
+        if not i==len(line)-1:
+            n=normalFromSeg(line[i], line[i+1])
+        
+        
+    line=higher+lower[::-1]
+    line.append(line[0]) #closes the line
+    return line
+
+def contourFromRoad(road):
+    return contourFromLine(road["coordinates"],road["width"])
+
+def getRoads(roads):
     roadSurfaces=list()
     roadNormals=list()
     for r in roads:
-        roadSurface, roadNormal=getSurface(getRoad(r, width), 0.1)
+        roadSurface, roadNormal=getSurface(getRoad(r), 0.1)
         roadSurfaces.append(roadSurface)
         roadNormals.append(roadNormal)
     
     return roadSurfaces, roadNormals
 
-#idea: make two lines displaced by width/2 from center
+# make two lines displaced by width/2 from center
+
+
 def getRoad(road, width=-1):
     '''
     road: dict where coordinates contain the line of points and width contains a positive number
     width: overrides the desired width of the road
     returns: closed loop of the shape of the road [[x, y], ...] can be fed to getSurface
     '''
-    if width<0:
-        width=road["width"]
-    hw=width/2
-    line=road["coordinates"]
-    lower=list()
-    higher=list()
-    x0, y0=[0, 0]
-    skip=True
-    for x, y in line:
-        if skip:
-            x0, y0=x, y
-            skip=False
-            continue
-        n=normalFromSeg([x0, y0], [x, y])
-        lower.append( [x-n[0]*hw, y-n[1]*hw] )
-        higher.append( [x+n[0]*hw, y+n[1]*hw] )
     
-    line=higher+lower[::-1]
-    line.append(line[0])
-    return np.array(line)
+    return contourFromRoad(road)
 
 def getField(field, height=0.1):
     '''
