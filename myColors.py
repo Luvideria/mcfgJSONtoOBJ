@@ -17,17 +17,28 @@ def getRoadColor():
     ns=20
     ni=1.0
     return i, kd, ks, ka, tf, ns, ni
-
-def getWallbColor():
+def getCityTowerColor():
     '''
     city walls color
     '''
     i=4
-    kd=[0.46, 0.03, 0.09]
-    ks=[0.3, 0.01, 0.02]
-    ka=[0.2, 0.01, 0.01]
+    kd=[0.46, 0.3, 0.6]
+    ks=[0.1, 0.1, 0.1]
+    ka=[0.09, 0.9, 0.09]
     tf=[1.0, 1.0, 1.0]
-    ns=30
+    ns=15
+    ni=1.0
+    return i, kd, ks, ka, tf, ns, ni
+def getCityWallColor():
+    '''
+    city walls color
+    '''
+    i=4
+    kd=[0.46, 0.463, 0.469]
+    ks=[0.03, 0.01, 0.02]
+    ka=[0.02, 0.01, 0.01]
+    tf=[1.0, 1.0, 1.0]
+    ns=10
     ni=1.0
     return i, kd, ks, ka, tf, ns, ni
 def getWallbColor():

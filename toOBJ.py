@@ -16,8 +16,10 @@ def getMaterial(name):
         return getGreensColor()
     if name == "rivers":
         return getRiversColor()
-    if name == "walls":
-        return getWallsColor()
+    if name == "citywall":
+        return getCityWallColor()
+    if name == "citytower":
+        return getCityTowerColor()
     if name == "wallb": # building walls, NOT city walls
         return getWallbColor()
     if name == "roof":
@@ -84,7 +86,7 @@ def writeNormalArray(array, file):
         file.write(vertex(a, True))
         
 def vertex(v, n=False):
-    x, y, z=v
+    x, z, y=v
     s=""
     if(n):
         s="vn "

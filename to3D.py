@@ -10,6 +10,16 @@ def normalFromSeg(p0, p1):
     dx=p1[0]-p0[0]
     dy=p1[1]-p0[1]
     norm=np.sqrt(dx*dx+dy*dy)
+    if norm==0:
+        if dx==dy:
+            print("you are trying to use normalFromSeg with two identical numbers")
+            print("make sure you didn't try to close a contour twice!")
+        else:
+            print(f' norm: {norm:.2f}')
+            print(f'dx,dy: {dx:.2f},{dy:.2f}')
+            print(f'p0: {p0:.2f}')
+            print(f'p1: {p1:.2f}')
+            print("___")
     dx=dx/norm
     dy=dy/norm
     return [-dy, dx]
@@ -58,6 +68,36 @@ def getRoad(road, width=-1):
     
     return contourFromRoad(road)
 
+def getCityWalls(cityContour, height=10):
+    '''
+    field: a contour [[x, y], [x, y]]
+    returns either a plane that has height just above the ground (0) or a surface with walls
+    '''
+    triangles=list()
+    normals=list()
+    for seg in cityContour:        
+        if seg[0]==seg[-1]:
+            seg=seg[0:-1]
+        t, n=getCityWall(seg, height)
+        triangles.append(t)
+        normals.append(n)
+    return triangles, normals
+
+def getCityWall(cityWall, height=10):
+    '''
+    field: a contour [[x, y], [x, y]]
+    returns either a plane that has height just above the ground (0) or a surface with walls
+    '''
+    triangles=list()
+    normals=list()
+    
+    triangles, normals = getWalls(cityWall, height)
+    
+    top, ntop=getSurface(cityWall, height) #either we get them with {} or we leave it like that
+    triangles.extend(top)
+    normals.extend(ntop)
+    return triangles, normals
+
 def getField(field, height=0.1):
     '''
     field: a contour [[x, y], [x, y]]
@@ -66,7 +106,7 @@ def getField(field, height=0.1):
     doWalls=False
     triangles=list()
     normals=list()
-    field.append(field[0]) #to got a closed loop
+    field.append(field[0]) #to get a closed loop
     if not height==0.1:
         triangles, normals=getWalls(field, height)
     
@@ -96,8 +136,7 @@ def getSurfaces(contours, height):
 def getEarth(earth, height=0):
     return getSurface(earth, height)
     
-def getSurface(contour, height):
-    
+def getSurface(contour, height):    
     surfacetris=tripy.earclip(contour)
     #this above returns something of the form ( ((1, 0), (0, 1), (0, 0)), ((...), ...), ... )
     #this below converts it to array( [ [1, 0, height], [0, 1, height], [0, 0, height] ], [[...], ...]... )
@@ -143,3 +182,71 @@ def getWallsBuildings(buildings, height=-1):
         normals.append(n)
         i+=1
     return triangles, normals
+
+def makeCircle(cx,cy,r,d=10):
+    thetas = np.linspace(0, 2*np.pi, d)
+    circle = [[cx+r * np.cos(theta), cy+r * np.sin(theta)] for theta in thetas]
+    return circle
+
+def getCityWallsAndTowersContour(roads,walls,wT,tR):
+    wallSegs=getWallSegs(roads,walls,tR)
+    walls=[]
+    towers=[]
+    i=0
+    for seg in wallSegs:
+
+        xr,yr=np.array(seg).transpose()#just lines
+        cityWalls=contourFromLine(seg,wT) #contours of walls [[x1,y1],[x2,y2]...]
+        walls.append(cityWalls)
+        circles=[makeCircle(a,b,tR) for a,b in zip(xr,yr)]#contours of circles, makeCircle creates [[x1,x2,...],[y1,y2,...]]
+        
+        [towers.append(c) for c in circles]
+       
+    return walls,towers
+        
+def getWallSegs(roads,walls,towerRadius):
+    wallseg=list()
+    for w in walls:
+        for what in w["coordinates"]:
+            x,y=np.transpose(what)
+            currentWallSeg=[]
+            for i in range(len(x)):
+                #plt.plot(x[i],y[i], "o", color="blue") #display point
+                added=False
+                for rc in roads: #iterate roads
+                    roadWidth=rc["width"]
+                    for xri,yri in rc['coordinates']:
+                        if x[i]==xri and y[i]==yri:
+                    #        plt.plot(xri,yri,"o",color="red")
+                            #detected road. because we started at 1, we can always get x[i-1]
+                            xp=x[-1] if i==0 else x[i-1]
+                            yp=y[-1] if i==0 else y[i-1]
+
+                            # we want a point that is at roadwidth/2+towerwidth/2 of the initial point, along the segment
+
+                            leng=np.sqrt( (x[i]-xp)**2 + (y[i]-yp)**2 )
+                            t=(leng-towerRadius/2-roadWidth/2)/leng
+                            xnp1 = x[i]*t+xp*(1-t)
+                            ynp1 = y[i]*t+yp*(1-t)
+                     #       plt.plot(xnp1,ynp1,"o",color="yellow")
+
+                            xn = x[0] if i==len(x)-1 else x[i+1]
+                            yn = y[0] if i==len(x)-1 else y[i+1]
+                            leng=np.sqrt( (x[i]-xn)**2 + (y[i]-yn)**2 )
+                            
+                            t=(leng-towerRadius-roadWidth/2-2)/leng#-2 for having a little offset from each side
+                            xnp2 = x[i]*t+xn*(1-t)
+                            ynp2 = y[i]*t+yn*(1-t)
+                     #       plt.plot(xnp2,ynp2,"o",color="green")
+                            currentWallSeg.append([xnp1,ynp1])
+                            wallseg.append(currentWallSeg)
+                            if i==len(x)-1:
+                                wallseg[0].insert(0,[xnp2,ynp2])
+                            else:
+                                currentWallSeg=[[xnp2,ynp2]]
+                            added=True
+
+
+                if not added:
+                    currentWallSeg.append([x[i],y[i]])
+    return wallseg
